@@ -7,7 +7,7 @@ import { useMutation } from "@apollo/client"
 const CreateDraftMutation = gql`
   mutation CreateDraftMutation(
     $title: String!
-    $content: String
+    $content: String!
     $authorEmail: String!
   ) {
     createDraft(title: $title, content: $content, authorEmail: $authorEmail) {
@@ -28,7 +28,14 @@ function Draft() {
   const [content, setContent] = useState("")
   const [authorEmail, setAuthorEmail] = useState("")
 
-  const [createDraft] = useMutation(CreateDraftMutation)
+  const [createDraft, {loading, error}] = useMutation(CreateDraftMutation)
+
+    if (loading) {
+    return <div>Loading ...</div>
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
 
   return (
     <Layout>

@@ -1,7 +1,8 @@
-import { objectType, queryField, mutationField, nonNull, list, nullable, inputObjectType, stringArg } from 'nexus'
+import { objectType, queryField, mutationField, nonNull, list, nullable, stringArg } from 'nexus'
 import prisma from '../../../lib/prisma'
 import { User } from '../User'
 
+/** MODEL */
 export const Post = objectType({
     name: 'Post',
     definition(t) {
@@ -21,24 +22,7 @@ export const Post = objectType({
     },
 })
 
-export const InputPostIdForPostsQuery = inputObjectType({
-    name: "InputAuthorIdForPostsQuery",
-    definition(t) {
-        t.string("postId")
-    },
-})
-
-
-export const InputPostContentForCreateQuery = inputObjectType({
-    name: "InputPostContentForCreateQuery",
-    definition(t) {
-        t.nonNull.string('title')
-        t.nonNull.string('content')
-        t.nonNull.string('authorEmail')
-    },
-})
-
-/** Queries */
+/** QUERIES */
 export const post = queryField('post', {
     type: nullable(Post),
     args: {
@@ -86,8 +70,7 @@ export const filterPosts = queryField('filterPosts', {
     },
 })
 
-/** Mutations */
-
+/** MUTATIONS */
 export const deletePost = mutationField('deletePost', {
     type: Post,
     args: {

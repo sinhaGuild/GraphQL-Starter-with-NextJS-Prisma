@@ -1,16 +1,16 @@
-import { objectType, queryField, mutationField, nonNull, list, nullable, inputObjectType, stringArg } from 'nexus'
+import { objectType, queryField, mutationField, nonNull, list, nullable, stringArg } from 'nexus'
 import prisma from '../../../lib/prisma'
 import { Post } from '../Post'
 
 /**
- * Model
+ * MODEL
  */
 export const User = objectType({
     name: 'User',
     definition(t) {
         t.int('id')
-        t.string('name')
-        t.string('email')
+        t.nonNull.string('name')
+        t.nonNull.string('email')
         t.list.field('posts', {
             type: Post,
             resolve: (parent) =>
@@ -23,24 +23,7 @@ export const User = objectType({
     },
 })
 
-//Input Types
-export const InputAuthorContentForCreateQuery = inputObjectType({
-    name: "InputAuthorContentForCreateQuery",
-    definition(t) {
-        t.string("name")
-        t.string("email")
-    },
-})
-//Input Types
-export const InputAuthorIdForFetch = inputObjectType({
-    name: "InputAuthorIdForFetch",
-    definition(t) {
-        t.string("authorId")
-    },
-})
-
-
-//Queries
+/** QUERIES */
 export const users = queryField('allUsers', {
     type: nullable(list(nonNull(User))),
     async resolve(_root, _args, ctx) {
@@ -62,9 +45,9 @@ export const user = queryField('user', {
     }
 })
 
-//Mutations
+/** MUTATIONS */
 export const signupUser = mutationField('signupUser', {
-    type: nullable(User),
+    type: User,
     args: {
         name: nonNull(stringArg()),
         email: nonNull(stringArg()),

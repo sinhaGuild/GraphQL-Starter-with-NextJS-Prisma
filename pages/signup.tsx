@@ -5,7 +5,7 @@ import gql from "graphql-tag"
 import { useMutation } from "@apollo/client"
 
 const SignupMutation = gql`
-  mutation SignupMutation($name: String, $email: String!) {
+  mutation SignupMutation($name: String!, $email: String!) {
     signupUser(name: $name, email: $email) {
       id
       name
@@ -18,7 +18,14 @@ function Signup(props) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
 
-  const [signup] = useMutation(SignupMutation)
+  const [signup, {loading, error}] = useMutation(SignupMutation)
+
+    if (loading) {
+    return <div>Loading ...</div>
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
 
   return (
     <Layout>
@@ -27,7 +34,6 @@ function Signup(props) {
           onSubmit={async e => {
             e.preventDefault()
             console.log("submit", name, email)
-
             await signup({
               variables: {
                 name: name,
@@ -40,13 +46,13 @@ function Signup(props) {
           <h1>Signup user</h1>
           <input
             autoFocus
-            onChange={e => setName(e.target.value)}
+            onChange={e => setName(e.target.value.toString())}
             placeholder="Name"
             type="text"
             value={name}
           />
           <input
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value.toString())}
             placeholder="Email address)"
             type="text"
             value={email}

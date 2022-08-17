@@ -15,14 +15,9 @@ export const schema =
             schema: path.join(__dirname, "../schema.graphql"),
             typegen: path.join(__dirname, "schema-typegen.ts")
         },
-        // contextType: {
-        //     module: require.resolve('./context'),
-        //     alias: 'Context',
-        //     export: "Context"
-        // },
-        nonNullDefaults: {
-            output: true
-        }
+        // nonNullDefaults: {
+        //     output: true
+        // }
     });
 
 
